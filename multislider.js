@@ -276,19 +276,19 @@ angular.module('angularMultiSlider', [])
 
               newValue = roundStep(newValue, parseInt(scope.precision), parseFloat(scope.step), parseFloat(scope.floor));
 
-              //check to see if current Handle is in the middle of the scope
-              if (currentRef === 0) { //first handle
+              //Maintain slider order, assumes slider object had proper initial / sequential order
+              if (currentRef === 0) { //first slider
                 if (newValue <= minValue) {
                   scope.sliders[currentRef].value = minValue;
                 }
                 if (newValue <= scope.sliders[currentRef+1].value) {
                   scope.sliders[currentRef].value = newValue;
                 }
-              } else if (currentRef > 0 && currentRef < scope.sliders.length - 1) { // middle handle
+              } else if (currentRef > 0 && currentRef < scope.sliders.length - 1) { // middle slider
                 if (newValue >= scope.sliders[currentRef-1].value && newValue <= scope.sliders[currentRef+1].value){
                   scope.sliders[currentRef].value = newValue;
                 }
-              } else if (currentRef === scope.sliders.length - 1) { // last handle
+              } else if (currentRef === scope.sliders.length - 1) { // last slider
                 if (newValue >= maxValue) {
                   scope.sliders[currentRef].value = maxValue;
                 }
