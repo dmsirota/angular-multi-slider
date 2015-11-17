@@ -275,7 +275,27 @@ angular.module('angularMultiSlider', [])
                 newValue = minValue + (valueRange * newPercent / 100.0);
 
               newValue = roundStep(newValue, parseInt(scope.precision), parseFloat(scope.step), parseFloat(scope.floor));
-              scope.sliders[currentRef].value = newValue;
+
+              //check to see if current Handle is in the middle of the scope
+              if (currentRef === 0) { //first handle
+                if (newValue <= minValue) {
+                  scope.sliders[currentRef].value = minValue;
+                }
+                if (newValue <= scope.sliders[currentRef+1].value) {
+                  scope.sliders[currentRef].value = newValue;
+                }
+              } else if (currentRef > 0 && currentRef < scope.sliders.length - 1) { // middle handle
+                if (newValue >= scope.sliders[currentRef-1].value && newValue <= scope.sliders[currentRef+1].value){
+                  scope.sliders[currentRef].value = newValue;
+                }
+              } else if (currentRef === scope.sliders.length - 1) { // last handle
+                if (newValue >= maxValue) {
+                  scope.sliders[currentRef].value = maxValue;
+                }
+                if (newValue >= scope.sliders[currentRef-1].value) {
+                  scope.sliders[currentRef].value = newValue;
+                }
+              }
 
               setHandles();
               overlapCheck(currentRef);
